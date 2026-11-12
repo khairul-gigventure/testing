@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KelasPulse AI — Sistem Maklum Balas Peserta & Live Wall</title>
+    <meta name="description" content="Sistem Maklum Balas Peserta & Public Live Wall dengan moderasi Gemini AI dan Admin Analytics." />
+    <meta property="og:title" content="KelasPulse AI — Sistem Maklum Balas Peserta & Live Wall" />
+    <meta property="og:description" content="Sistem Maklum Balas Peserta & Public Live Wall dengan moderasi Gemini AI dan Admin Analytics." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      // HMR is disabled in AI Studio; ignore Vite WebSocket connection errors
+      window.addEventListener('unhandledrejection', function(event) {
+        var reason = event.reason;
+        var msg = (reason && (reason.message || reason.stack || String(reason))) || '';
+        if (msg.includes('WebSocket') || msg.includes('vite:ws') || msg.includes('createWebSocketModuleRunnerTransport')) {
+          event.preventDefault();
+        }
+      });
+      window.addEventListener('error', function(event) {
+        var msg = (event && (event.message || '')) || '';
+        if (msg.includes('WebSocket') || (event.filename && event.filename.includes('@vite/client'))) {
+          event.preventDefault();
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
