@@ -1,13 +1,25 @@
 @import "tailwindcss";
 
 @layer base {
+  :root {
+    --bg-page: #F6F7F9;
+    --surface: #FFFFFF;
+    --text-main: #17212B;
+    --text-muted: #596579;
+    --border-subtle: #E2E6EB;
+    --accent: #2457E7;
+    --accent-hover: #1D46BE;
+    --projector-bg: #101820;
+  }
+
   body {
-    background-color: #FAFAF8;
-    color: #181716;
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    letter-spacing: -0.012em;
+    font-size: 16px;
+    line-height: 1.5;
   }
 
   .font-tabular {
@@ -16,54 +28,45 @@
   }
 }
 
-/* Subtle micro-shadows for true SaaS depth */
-.shadow-subtle {
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 3px 1px rgba(0, 0, 0, 0.02);
-}
-
-.shadow-card-elevated {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -2px rgba(0, 0, 0, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.04);
-}
-
-.shadow-card-elevated-dark {
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.06);
+/* Subtle border and surface styling, avoiding heavy AI-slop shadows */
+.border-subtle {
+  border-color: #E2E6EB;
 }
 
 /* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D4D2CD;
+  background: #D5DBE1;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #A3A19B;
+  background: #B6BFC9;
 }
 
-/* Smooth continuous marquee stream animations */
-@keyframes marquee-scroll {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
-}
-
+/* Smooth slow marquee for projector readability */
 @keyframes marquee-horizontal {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
-.animate-marquee-vertical {
-  animation: marquee-scroll 45s linear infinite;
-}
-
-.animate-marquee-horizontal {
+.animate-marquee-slow {
   display: flex;
   width: max-content;
-  animation: marquee-horizontal 42s linear infinite;
+  animation: marquee-horizontal 55s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-slow-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee-horizontal 65s linear infinite reverse;
+  will-change: transform;
 }
 
 .pause-on-hover:hover {
@@ -72,6 +75,16 @@
 
 .is-paused {
   animation-play-state: paused !important;
+}
+
+/* Accessibility: Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-slow,
+  .animate-marquee-slow-reverse {
+    animation: none !important;
+    transform: none !important;
+    overflow-x: auto;
+  }
 }
 
 /* Print layout optimizations */

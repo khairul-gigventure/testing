@@ -2,5 +2,7 @@
   "name": "KelasPulse AI",
   "description": "Sistem Maklum Balas Peserta & Public Live Wall dengan moderasi Gemini AI dan Admin Analytics.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

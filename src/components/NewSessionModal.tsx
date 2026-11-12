@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Calendar, User, Sparkles } from 'lucide-react';
+import { X } from 'lucide-react';
 import { TrainingSession } from '../types';
 
 interface NewSessionModalProps {
@@ -47,21 +47,31 @@ export const NewSessionModal: React.FC<NewSessionModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-100">
-      <div className="bg-white rounded-2xl shadow-xl max-w-md w-full border border-[#E8E6E1] overflow-hidden text-left animate-in zoom-in-95 duration-150">
+    <div
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/40 backdrop-blur-2xs flex items-center justify-center p-4 animate-in fade-in duration-100"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="new-session-title"
+    >
+      <div
+        className="bg-white rounded-xl max-w-md w-full border border-[#E2E6EB] overflow-hidden text-left shadow-lg"
+        onClick={e => e.stopPropagation()}
+      >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-[#E8E6E1] flex items-center justify-between bg-[#FAFAF8]">
+        <div className="px-5 py-4 border-b border-[#E2E6EB] flex items-center justify-between">
           <div>
-            <h2 className="font-extrabold text-[#181716] text-sm">
-              Cipta Sesi Bengkel Baharu
+            <h2 id="new-session-title" className="font-semibold text-[#17212B] text-base">
+              Cipta sesi baharu
             </h2>
-            <p className="text-xs text-[#73726E]">
-              Daftar sesi latihan untuk menjana pautan dan kod QR khusus.
+            <p className="text-xs text-[#596579] mt-0.5">
+              Daftar sesi untuk menjana pautan dan kod QR kepada peserta.
             </p>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-1.5 text-[#73726E] hover:text-[#181716] rounded-lg hover:bg-[#F3F3EE] transition-colors"
+            className="p-1.5 text-[#596579] hover:text-[#17212B] rounded-lg hover:bg-[#F6F7F9] transition-colors"
             aria-label="Tutup"
           >
             <X className="w-4 h-4" />
@@ -69,75 +79,70 @@ export const NewSessionModal: React.FC<NewSessionModalProps> = ({
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4 text-xs">
           <div>
-            <label htmlFor="new-session-title" className="text-xs font-bold text-[#181716] block mb-1">
-              Nama Program / Tajuk Bengkel <span className="text-[#DC2626]">*</span>
+            <label htmlFor="new-session-title-input" className="font-medium text-[#17212B] block mb-1">
+              Nama program / Tajuk bengkel <span className="text-[#DC2626]">*</span>
             </label>
             <input
-              id="new-session-title"
+              id="new-session-title-input"
               type="text"
               required
-              placeholder="Contoh: Bengkel Generative AI untuk Produktiviti Pejabat"
+              placeholder="Contoh: Bengkel Prompt Engineering & Automasi"
               value={title}
               onChange={e => setTitle(e.target.value)}
-              className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-[#DCDAD4] focus:outline-none focus:border-[#181716]"
+              className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-lg border border-[#E2E6EB] focus:outline-none focus:border-[#2457E7]"
             />
-            <p className="text-[11px] text-[#73726E] mt-1">
-              Tajuk ini akan dipaparkan di bahagian atas borang penilaian peserta dan Dinding Langsung.
-            </p>
           </div>
 
           <div>
-            <label htmlFor="new-session-date" className="text-xs font-bold text-[#181716] block mb-1">
-              Tarikh Program <span className="text-[#DC2626]">*</span>
-            </label>
-            <div className="relative">
-              <input
-                id="new-session-date"
-                type="date"
-                required
-                value={date}
-                onChange={e => setDate(e.target.value)}
-                className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-[#DCDAD4] focus:outline-none focus:border-[#181716]"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="new-session-instructor" className="text-xs font-bold text-[#181716] block mb-1">
-              Nama Trainer / Lokasi <span className="text-[#73726E] font-normal">(Pilihan)</span>
+            <label htmlFor="new-session-date-input" className="font-medium text-[#17212B] block mb-1">
+              Tarikh program <span className="text-[#DC2626]">*</span>
             </label>
             <input
-              id="new-session-instructor"
+              id="new-session-date-input"
+              type="date"
+              required
+              value={date}
+              onChange={e => setDate(e.target.value)}
+              className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-lg border border-[#E2E6EB] focus:outline-none focus:border-[#2457E7]"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="new-session-instructor-input" className="font-medium text-[#17212B] block mb-1">
+              Nama jurulatih / Lokasi <span className="text-[#596579] font-normal">(pilihan)</span>
+            </label>
+            <input
+              id="new-session-instructor-input"
               type="text"
-              placeholder="Contoh: Dr. Rizal / Bilik Seminar Mercu"
+              placeholder="Contoh: Dr. Rizal / Bilik Seminar A"
               value={instructor}
               onChange={e => setInstructor(e.target.value)}
-              className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-[#DCDAD4] focus:outline-none focus:border-[#181716]"
+              className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-lg border border-[#E2E6EB] focus:outline-none focus:border-[#2457E7]"
             />
           </div>
 
           {error && (
-            <div className="p-3 bg-[#FEF2F2] border border-[#FCA5A5] text-[#991B1B] text-xs rounded-xl">
+            <div className="p-3 bg-[#FEF2F2] border border-[#FCA5A5] text-[#991B1B] text-xs rounded-lg">
               {error}
             </div>
           )}
 
           {/* Footer Actions */}
-          <div className="pt-3 border-t border-[#F0EFEA] flex items-center justify-end gap-2.5">
+          <div className="pt-3 border-t border-[#E2E6EB] flex items-center justify-end gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-[#181716] bg-white border border-[#DCDAD4] rounded-xl hover:bg-[#F7F7F4]"
+              className="px-3.5 py-2 text-xs font-medium text-[#17212B] bg-white border border-[#E2E6EB] rounded-lg hover:bg-[#F6F7F9]"
             >
               Batal
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-xs font-bold text-white bg-[#181716] rounded-xl hover:bg-[#2C2A28] transition-colors shadow-xs"
+              className="px-4 py-2 text-xs font-medium text-white bg-[#2457E7] hover:bg-[#1D46BE] rounded-lg transition-colors"
             >
-              Cipta Sesi & Jana QR
+              Cipta sesi
             </button>
           </div>
         </form>

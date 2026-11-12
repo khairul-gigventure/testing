@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Printer, Download } from 'lucide-react';
+import { X, Printer } from 'lucide-react';
 import { FeedbackEntry, TrainingSession, ExecutiveSummary } from '../types';
 
 interface PrintReportModalProps {
@@ -34,29 +34,35 @@ export const PrintReportModal: React.FC<PrintReportModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 animate-in fade-in duration-100">
-      <div className="bg-white rounded-2xl shadow-xl max-w-4xl w-full border border-[#E8E6E1] overflow-hidden max-h-[92vh] flex flex-col animate-in zoom-in-95 duration-150">
+    <div
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/40 backdrop-blur-2xs flex items-center justify-center p-2 sm:p-4 animate-in fade-in duration-100"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="print-modal-title"
+    >
+      <div
+        className="bg-white rounded-xl max-w-4xl w-full border border-[#E2E6EB] overflow-hidden max-h-[92vh] flex flex-col shadow-xl"
+        onClick={e => e.stopPropagation()}
+      >
         {/* Top Bar (No Print) */}
-        <div className="no-print px-6 py-4 border-b border-[#E8E6E1] flex items-center justify-between bg-[#FAFAF8]">
-          <div>
-            <h2 className="font-extrabold text-[#181716] text-sm">
-              Laporan Analitik Eksekutif Sesi
-            </h2>
-            <p className="text-xs text-[#73726E]">
-              Sedia untuk cetakan rasmi atau simpan sebagai dokumen PDF.
-            </p>
-          </div>
+        <div className="no-print px-5 py-4 border-b border-[#E2E6EB] flex items-center justify-between">
+          <h2 id="print-modal-title" className="font-semibold text-[#17212B] text-sm">
+            Laporan maklum balas sesi
+          </h2>
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={handlePrint}
-              className="inline-flex items-center px-4 py-2 rounded-xl text-xs font-bold bg-[#181716] text-white hover:bg-[#2C2A28] transition-colors shadow-xs"
+              className="inline-flex items-center px-3.5 py-1.5 rounded-lg text-xs font-medium bg-[#2457E7] hover:bg-[#1D46BE] text-white transition-colors"
             >
               <Printer className="w-3.5 h-3.5 mr-1.5" />
               <span>Cetak / Simpan PDF</span>
             </button>
             <button
+              type="button"
               onClick={onClose}
-              className="p-1.5 text-[#73726E] hover:text-[#181716] rounded-lg hover:bg-[#F3F3EE] transition-colors"
+              className="p-1.5 text-[#596579] hover:text-[#17212B] rounded-lg hover:bg-[#F6F7F9] transition-colors"
               aria-label="Tutup"
             >
               <X className="w-4 h-4" />
@@ -65,79 +71,79 @@ export const PrintReportModal: React.FC<PrintReportModalProps> = ({
         </div>
 
         {/* Printable Document Body */}
-        <div className="p-8 sm:p-12 overflow-y-auto space-y-8 text-[#181716] print:p-0 print:overflow-visible">
+        <div className="p-8 sm:p-12 overflow-y-auto space-y-8 text-[#17212B] text-left print:p-0 print:overflow-visible">
           {/* Document Header */}
-          <div className="border-b-2 border-[#181716] pb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div className="border-b-2 border-[#17212B] pb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-              <div className="text-[11px] font-extrabold text-[#73726E] uppercase tracking-wider mb-1">
-                KelasPulse AI · Laporan Penilaian Rasmi Kursus
+              <div className="text-xs font-semibold text-[#596579] uppercase tracking-wider mb-1">
+                KelasPulse · Laporan Penilaian Bengkel
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#181716]">
+              <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#17212B]">
                 {sessionTitle}
               </h1>
               {session?.instructor && (
-                <p className="text-xs text-[#73726E] mt-1">
-                  Tenaga Pengajar: <span className="text-[#181716] font-semibold">{session.instructor}</span>
+                <p className="text-xs text-[#596579] mt-1">
+                  Jurulatih: <span className="text-[#17212B] font-medium">{session.instructor}</span>
                 </p>
               )}
             </div>
 
-            <div className="text-left sm:text-right text-xs text-[#73726E] space-y-0.5 font-medium">
-              <p>Tarikh Program: <span className="font-bold text-[#181716]">{session?.date || 'Pelbagai Tarikh'}</span></p>
-              <p>Tarikh Dokumen: <span className="font-bold text-[#181716]">{new Date().toLocaleDateString('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' })}</span></p>
-              <p>Jumlah Responden: <span className="font-tabular font-bold text-[#181716]">{feedbacks.length} orang</span></p>
+            <div className="text-left sm:text-right text-xs text-[#596579] space-y-0.5">
+              <p>Tarikh program: <span className="font-medium text-[#17212B]">{session?.date || 'Pelbagai'}</span></p>
+              <p>Tarikh dokumen: <span className="font-medium text-[#17212B]">{new Date().toLocaleDateString('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' })}</span></p>
+              <p>Jumlah respons: <span className="font-tabular font-medium text-[#17212B]">{feedbacks.length} orang</span></p>
             </div>
           </div>
 
           {/* KPI Strip */}
           <div>
-            <h2 className="text-xs font-bold text-[#73726E] uppercase tracking-wider mb-3">
-              1. Ringkasan Prestasi Utama (KPI)
+            <h2 className="text-xs font-semibold text-[#596579] uppercase tracking-wider mb-3">
+              Ringkasan prestasi (KPI)
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-              <div className="p-4 rounded-xl border border-[#E8E6E1] bg-[#FAFAF8] text-center">
-                <span className="text-[11px] text-[#73726E] block mb-1">Kepuasan Keseluruhan</span>
-                <span className="text-2xl font-extrabold font-tabular text-[#181716]">{avgOverall}</span>
-                <span className="text-[10px] text-[#73726E] block mt-0.5">/ 5.0 bintang</span>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="p-4 rounded-lg border border-[#E2E6EB] bg-[#F6F7F9] text-center">
+                <span className="text-xs text-[#596579] block mb-1">Kepuasan keseluruhan</span>
+                <span className="text-2xl font-semibold font-tabular text-[#17212B]">{avgOverall}</span>
+                <span className="text-[11px] text-[#596579] block mt-0.5">/ 5.0 bintang</span>
               </div>
-              <div className="p-4 rounded-xl border border-[#E8E6E1] bg-[#FAFAF8] text-center">
-                <span className="text-[11px] text-[#73726E] block mb-1">Kefahaman Kandungan</span>
-                <span className="text-2xl font-extrabold font-tabular text-[#181716]">{avgContent}</span>
-                <span className="text-[10px] text-[#73726E] block mt-0.5">/ 5.0 bintang</span>
+              <div className="p-4 rounded-lg border border-[#E2E6EB] bg-[#F6F7F9] text-center">
+                <span className="text-xs text-[#596579] block mb-1">Kandungan modul</span>
+                <span className="text-2xl font-semibold font-tabular text-[#17212B]">{avgContent}</span>
+                <span className="text-[11px] text-[#596579] block mt-0.5">/ 5.0 bintang</span>
               </div>
-              <div className="p-4 rounded-xl border border-[#E8E6E1] bg-[#FAFAF8] text-center">
-                <span className="text-[11px] text-[#73726E] block mb-1">Penyampaian Trainer</span>
-                <span className="text-2xl font-extrabold font-tabular text-[#181716]">{avgDelivery}</span>
-                <span className="text-[10px] text-[#73726E] block mt-0.5">/ 5.0 bintang</span>
+              <div className="p-4 rounded-lg border border-[#E2E6EB] bg-[#F6F7F9] text-center">
+                <span className="text-xs text-[#596579] block mb-1">Penyampaian jurulatih</span>
+                <span className="text-2xl font-semibold font-tabular text-[#17212B]">{avgDelivery}</span>
+                <span className="text-[11px] text-[#596579] block mt-0.5">/ 5.0 bintang</span>
               </div>
-              <div className="p-4 rounded-xl border border-[#E8E6E1] bg-[#FAFAF8] text-center">
-                <span className="text-[11px] text-[#73726E] block mb-1">Skor Kesetiaan (NPS)</span>
-                <span className="text-2xl font-extrabold font-tabular text-[#181716]">
+              <div className="p-4 rounded-lg border border-[#E2E6EB] bg-[#F6F7F9] text-center">
+                <span className="text-xs text-[#596579] block mb-1">Skor cadangan (NPS)</span>
+                <span className="text-2xl font-semibold font-tabular text-[#17212B]">
                   {typeof npsScore === 'number' && npsScore > 0 ? `+${npsScore}` : npsScore}
                 </span>
-                <span className="text-[10px] text-[#73726E] block mt-0.5">Julat -100 ke +100</span>
+                <span className="text-[11px] text-[#596579] block mt-0.5">Julat -100 ke +100</span>
               </div>
             </div>
           </div>
 
           {/* AI Executive Summary */}
           {summary && (
-            <div className="p-6 rounded-2xl border border-[#E8E6E1] bg-[#FAFAF8] space-y-4">
-              <div className="flex items-center justify-between border-b border-[#E8E6E1] pb-2.5">
-                <h2 className="text-xs font-extrabold text-[#181716] uppercase tracking-wider">
-                  2. Rumusan Eksekutif Berasaskan AI
+            <div className="p-6 rounded-lg border border-[#E2E6EB] bg-[#F6F7F9] space-y-4 text-xs">
+              <div className="flex items-center justify-between border-b border-[#E2E6EB] pb-2">
+                <h2 className="font-semibold text-xs text-[#17212B] uppercase tracking-wider">
+                  Rumusan maklum balas
                 </h2>
-                <span className="text-[11px] text-[#73726E] font-tabular">
+                <span className="text-[#596579] font-tabular">
                   Dijana: {new Date(summary.generatedAt).toLocaleDateString('ms-MY')}
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="font-bold text-[#181716] mb-2">
-                    3 Kekuatan Utama Kelas:
+                  <h3 className="font-semibold text-[#17212B] mb-2">
+                    Kekuatan utama:
                   </h3>
-                  <ul className="space-y-1.5 list-disc pl-4 text-[#44423E] leading-relaxed">
+                  <ul className="space-y-1.5 list-disc pl-4 text-[#596579] leading-relaxed">
                     {summary.strengths.map((str, idx) => (
                       <li key={idx}>{str}</li>
                     ))}
@@ -145,10 +151,10 @@ export const PrintReportModal: React.FC<PrintReportModalProps> = ({
                 </div>
 
                 <div>
-                  <h3 className="font-bold text-[#181716] mb-2">
-                    Cadangan Penambahbaikan Tindakan:
+                  <h3 className="font-semibold text-[#17212B] mb-2">
+                    Cadangan penambahbaikan:
                   </h3>
-                  <ul className="space-y-1.5 list-disc pl-4 text-[#44423E] leading-relaxed">
+                  <ul className="space-y-1.5 list-disc pl-4 text-[#596579] leading-relaxed">
                     {summary.improvements.map((imp, idx) => (
                       <li key={idx}>{imp}</li>
                     ))}
@@ -156,11 +162,11 @@ export const PrintReportModal: React.FC<PrintReportModalProps> = ({
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-[#E8E6E1]">
-                <h3 className="font-bold text-[#181716] text-xs mb-1">
-                  Sentimen & Kesimpulan Eksekutif:
+              <div className="pt-2 border-t border-[#E2E6EB]">
+                <h3 className="font-semibold text-[#17212B] mb-1">
+                  Kesimpulan:
                 </h3>
-                <p className="text-xs text-[#44423E] leading-relaxed">
+                <p className="text-[#596579] leading-relaxed">
                   “{summary.conclusion}”
                 </p>
               </div>
@@ -169,48 +175,47 @@ export const PrintReportModal: React.FC<PrintReportModalProps> = ({
 
           {/* Feedback Table */}
           <div>
-            <h2 className="text-xs font-bold text-[#73726E] uppercase tracking-wider mb-3">
-              3. Senarai Lengkap Maklum Balas Peserta ({feedbacks.length})
+            <h2 className="text-xs font-semibold text-[#596579] uppercase tracking-wider mb-3">
+              Senarai maklum balas peserta ({feedbacks.length})
             </h2>
 
-            <div className="border border-[#E8E6E1] rounded-xl overflow-hidden">
+            <div className="border border-[#E2E6EB] rounded-lg overflow-hidden">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="bg-[#FAFAF8] text-[#73726E] font-semibold border-b border-[#E8E6E1]">
+                  <tr className="bg-[#F6F7F9] text-[#596579] font-medium border-b border-[#E2E6EB]">
                     <th className="p-2.5 w-10 text-center">#</th>
                     <th className="p-2.5">Peserta</th>
                     <th className="p-2.5 text-center">Rating</th>
                     <th className="p-2.5 text-center">NPS</th>
-                    <th className="p-2.5">Perkara Paling Bermanfaat</th>
-                    <th className="p-2.5">Cadangan Penambahbaikan</th>
+                    <th className="p-2.5">Perkara paling bermanfaat</th>
+                    <th className="p-2.5">Cadangan</th>
                     <th className="p-2.5 text-center">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#F0EFEA]">
+                <tbody className="divide-y divide-[#E2E6EB]">
                   {feedbacks.map((fb, idx) => (
-                    <tr key={fb.id} className="hover:bg-[#FAFAF8]/50">
-                      <td className="p-2.5 text-center text-[#8C887B] font-tabular">
+                    <tr key={fb.id} className="hover:bg-[#F6F7F9]/50">
+                      <td className="p-2.5 text-center text-[#596579] font-tabular">
                         {idx + 1}
                       </td>
-                      <td className="p-2.5 font-semibold text-[#181716] whitespace-nowrap">
-                        {fb.authorName}
-                        {fb.isAnonymous && <span className="text-[10px] text-[#73726E] block font-normal">(Anon)</span>}
+                      <td className="p-2.5 font-medium text-[#17212B] whitespace-nowrap">
+                        {fb.isAnonymous ? 'Tanpa nama' : fb.authorName}
                       </td>
-                      <td className="p-2.5 text-center font-tabular font-bold text-[#B45309]">
+                      <td className="p-2.5 text-center font-tabular font-medium text-[#D97706]">
                         {fb.ratingOverall}★
                       </td>
-                      <td className="p-2.5 text-center font-tabular font-bold text-[#181716]">
+                      <td className="p-2.5 text-center font-tabular font-medium text-[#17212B]">
                         {fb.npsScore}
                       </td>
-                      <td className="p-2.5 text-[#2B2A27] max-w-xs leading-snug">
+                      <td className="p-2.5 text-[#17212B] max-w-xs leading-snug">
                         {fb.keyTakeaway}
                       </td>
-                      <td className="p-2.5 text-[#73726E] max-w-xs leading-snug">
+                      <td className="p-2.5 text-[#596579] max-w-xs leading-snug">
                         {fb.improvementSuggestion || '—'}
                       </td>
                       <td className="p-2.5 text-center">
-                        <span className="text-[10px] text-[#73726E] font-semibold">
-                          {fb.status === 'approved' ? 'Live' : 'Hidden'}
+                        <span className="text-[11px] text-[#596579]">
+                          {fb.status === 'approved' ? 'Diluluskan' : 'Ditahan'}
                         </span>
                       </td>
                     </tr>
@@ -221,9 +226,9 @@ export const PrintReportModal: React.FC<PrintReportModalProps> = ({
           </div>
 
           {/* Footer */}
-          <div className="pt-6 border-t border-[#E8E6E1] text-[11px] text-[#73726E] flex justify-between">
-            <span>KelasPulse AI · Sistem Pengumpulan Maklum Balas & Live Wall</span>
-            <span>Dokumen Rasmi Penilaian Latihan</span>
+          <div className="pt-6 border-t border-[#E2E6EB] text-xs text-[#596579] flex justify-between">
+            <span>KelasPulse · Sistem Pengumpulan Maklum Balas Latihan</span>
+            <span>Dokumen Rasmi Penilaian</span>
           </div>
         </div>
       </div>

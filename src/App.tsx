@@ -3,7 +3,7 @@ import { Navbar } from './components/Navbar';
 import { LiveWall } from './components/LiveWall';
 import { ParticipantForm } from './components/ParticipantForm';
 import { AdminDashboard } from './components/AdminDashboard';
-import { QRCodeModal } from './components/QRCodeModal';
+import { ShareSessionModal } from './components/ShareSessionModal';
 import { NewSessionModal } from './components/NewSessionModal';
 import { storageService } from './services/storageService';
 import { TrainingSession, FeedbackEntry } from './types';
@@ -26,9 +26,9 @@ export default function App() {
   // Admin PIN unlocked state
   const [isAdminUnlocked, setIsAdminUnlocked] = useState<boolean>(false);
 
-  // QR Modal state
-  const [isQRModalOpen, setIsQRModalOpen] = useState<boolean>(false);
-  const [qrSession, setQrSession] = useState<TrainingSession | null>(null);
+  // Unified Share Session Modal state (combines QR code and copy link)
+  const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
+  const [shareSession, setShareSession] = useState<TrainingSession | null>(null);
 
   // New Session Modal state
   const [isNewSessionModalOpen, setIsNewSessionModalOpen] = useState<boolean>(false);
@@ -64,10 +64,10 @@ export default function App() {
     setFeedbacks(storageService.getFeedbacks());
   };
 
-  const handleOpenQR = (session?: TrainingSession) => {
+  const handleOpenShare = (session?: TrainingSession) => {
     const targetSession = session || sessions.find(s => s.id === selectedSessionId) || sessions[0];
-    setQrSession(targetSession || null);
-    setIsQRModalOpen(true);
+    setShareSession(targetSession || null);
+    setIsShareModalOpen(true);
   };
 
   const handleOpenTestForm = (sessionId: string) => {
@@ -78,8 +78,8 @@ export default function App() {
   const handleSessionCreated = (newSession: TrainingSession) => {
     handleRefreshData();
     setSelectedSessionId(newSession.id);
-    setQrSession(newSession);
-    setIsQRModalOpen(true);
+    setShareSession(newSession);
+    setIsShareModalOpen(true);
   };
 
   const handleFeedbackSubmitted = (newEntry: FeedbackEntry) => {
@@ -95,24 +95,23 @@ export default function App() {
     setActiveTab('wall');
   };
 
-  const activeSession = sessions.find(s => s.id === selectedSessionId) || sessions[0];
   const pendingModerationCount = feedbacks.filter(f => f.status === 'hidden').length;
 
   return (
-    <div className="min-h-screen bg-[#FAFAF8] text-[#181716] flex flex-col selection:bg-[#EFEFEA] selection:text-[#181716]">
-      {/* Top Navigation Bar with Quick Actions and Moderation Alerts */}
+    <div className="min-h-screen bg-[#F6F7F9] text-[#17212B] flex flex-col selection:bg-[#E2E6EB] selection:text-[#17212B]">
+      {/* Clean 3-zone Header */}
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         isAdminUnlocked={isAdminUnlocked}
-        onOpenQR={() => handleOpenQR()}
+        onOpenShare={() => handleOpenShare()}
         sessions={sessions}
         selectedSessionId={selectedSessionId}
         onSelectSession={setSelectedSessionId}
         pendingModerationCount={pendingModerationCount}
       />
 
-      {/* Main Content Area Based on Active Tab */}
+      {/* Main Content Viewport */}
       <main className="flex-1">
         {activeTab === 'wall' && (
           <LiveWall
@@ -120,7 +119,7 @@ export default function App() {
             sessions={sessions}
             selectedSessionId={selectedSessionId}
             onSelectSession={setSelectedSessionId}
-            onOpenQR={() => handleOpenQR()}
+            onOpenShare={() => handleOpenShare()}
             onOpenForm={() => setActiveTab('form')}
             highlightedFeedbackId={highlightedFeedbackId}
           />
@@ -142,7 +141,7 @@ export default function App() {
             selectedSessionId={selectedSessionId}
             onSelectSession={setSelectedSessionId}
             onOpenNewSession={() => setIsNewSessionModalOpen(true)}
-            onOpenQR={s => handleOpenQR(s)}
+            onOpenQR={s => handleOpenShare(s)}
             onRefreshData={handleRefreshData}
             isAdminUnlocked={isAdminUnlocked}
             setIsAdminUnlocked={setIsAdminUnlocked}
@@ -150,11 +149,11 @@ export default function App() {
         )}
       </main>
 
-      {/* QR Code Modal */}
-      <QRCodeModal
-        session={qrSession}
-        isOpen={isQRModalOpen}
-        onClose={() => setIsQRModalOpen(false)}
+      {/* Unified Share Session Panel (QR + Link) */}
+      <ShareSessionModal
+        session={shareSession}
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
         onOpenTestForm={handleOpenTestForm}
       />
 
